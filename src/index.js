@@ -6,9 +6,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const formEl = document.querySelector('.search-form');
 const containerEl = document.querySelector('.container');
 const loadMoreBtnEl = document.querySelector('.load-more');
-const inputEl = document.querySelector('input');
 const galleryEl = document.querySelector('.gallery-cards');
-const galleryLB = document.querySelector('.gallery');
 
 const isHiddenEl = document.querySelector('.load-more-cont');
 
@@ -51,6 +49,12 @@ formEl.addEventListener('submit', onInputSubmit);
 
 async function onInputSubmit(e) {
   e.preventDefault();
+
+  if (imageQuery !== e.target.elements.searchQuery.value.trim()) {
+    page = 1;
+    galleryEl.innerHTML = '';
+    isHiddenEl.classList.add('visually-hidden');
+  }
 
   imageQuery = e.target.elements.searchQuery.value.trim();
 
@@ -111,15 +115,6 @@ async function incrementPages(e) {
   refreshLightbox();
   scrollPages();
 }
-
-function onInputChange(e) {
-  if (imageQuery !== e.currentTarget.value.trim()) {
-    galleryEl.innerHTML = '';
-    isHiddenEl.classList.add('visually-hidden');
-  }
-}
-
-inputEl.addEventListener('input', onInputChange);
 
 function createLightbox() {
   return (lightbox = new SimpleLightbox('.gallery a', {
